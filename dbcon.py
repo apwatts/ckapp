@@ -3,14 +3,16 @@ import pymysql
 class DbCon:
     def __init__(self):
         print('try to connect')
-        self.db = pymysql.connect(host="110.232.86.18",
-                                  user='root',
-                                  password='test',
-                                  db='6eed585e681402fb',
-                                  charset='utf8mb4',
-                                  cursorclass=pymysql.cursors.DictCursor)
-        self.c = self.db.cursor()
-
+        try:
+            self.db = pymysql.connect(host="110.232.86.18",
+                                      user='root',
+                                      password='test',
+                                      db='6eed585e681402fb',
+                                      charset='utf8mb4',
+                                      cursorclass=pymysql.cursors.DictCursor)
+            self.c = self.db.cursor()
+        except:
+            print ('connection failed')
 
 
 

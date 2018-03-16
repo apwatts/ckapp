@@ -32,9 +32,10 @@ class ScreenLogin(Screen):
         """
         # print (username, password)
         # if password and username:
-        x = DbCon.check_user_password(username, password)
-        print (x)
-        instructor = username
+        try:
+            x = DbCon.check_user_password(username, password)
+            print (x)
+            instructor = username
         #         sm.current = "screen_main"
         #
         #     else:
@@ -42,7 +43,8 @@ class ScreenLogin(Screen):
         #
         # else:
         #     print("popup 'field missing'")
-
+        except:
+            instructor = 'david.gordon' # for testing
         sm.current = "screen_main"
 
 
