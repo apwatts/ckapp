@@ -1,0 +1,133 @@
+<ScreenLogin>:
+    GridLayout:
+        orientation:'vertical'
+        cols:2
+        padding:30
+        Label:
+            size_hint:(.5,None)
+            height:70
+            text:"User Name"
+            font_size:30
+            text_size:self.size
+            valign:"middle"
+
+        TextInput:
+            id:username
+            text:'david.gordon'
+            size_hint:(1,None)
+            height:70
+            cursor_blink:True
+            font_size:20
+            multiline:False
+
+        Label:
+            size_hint_y:None
+            height:70
+            text:"Pin:"
+            font_size:30
+            text_size:self.size
+            valign:"middle"
+
+        TextInput:
+            id:pin
+            text:'12345678'
+            size_hint_y:None
+            height:70
+            cursor_blink:True
+            font_size:20
+            multiline:False
+            password:True
+
+        Label:
+            size_hint_y:None
+            height:70
+
+        Button:
+            size_hint_y:None
+            height:70
+            text:'Login'
+            on_press:
+                root.press_login(username.text, pin.text)
+                #app.sm.current = "screen_main"
+
+<StudentWidget>:
+    id:swgd_1
+    orientation:'horizontal'
+    size_hint:1,None
+    height:30
+
+    Label:
+        id:swgd_1_student_name
+        #text_size:self.size
+
+        size_hint:None, None
+        width:265
+        halign:"left"
+        background_color: 1,0,1,1
+
+    CheckBox:
+        id:cb_a_group
+        size_hint_x:None
+        width:40
+        on_press:swgd_1.on_select_one()
+
+
+<ScreenMain>:
+    layout_content:layout_content
+    id:screen_main_id
+    BoxLayout:
+        orientation:'vertical'
+        BoxLayout:
+            orientation:'horizontal'
+            size_hint_y: None
+            height:30
+            pos_hint:{"left": 0, "top":1}
+
+            Spinner:
+                text:'Select Class'
+                #font_size: 0.8 * self.height
+                id:spinner_id
+                on_text:root.on_spinner_clicked(spinner_id.text)
+
+            Button:
+                id:lbl2
+                size_hint_y:None
+                height:30
+                text:'LOGOUT'
+                on_press:app.sm.current = "screen_login"
+
+        BoxLayout:
+            orientation:'horizontal'
+            size_hint_y:None
+            height:30
+
+            Button:
+                id:btn_select_none
+                text:'Uncheck All'
+                font_size: 12
+                size_hint_x:.5
+                on_press:root.on_select_none()
+
+            Button:
+                id:btn_select_all
+                text:'Check All'
+                font_size: 12
+                on_press:root.on_select_all()
+                size_hint_x:.5
+
+            Button:
+                # colour to indicate date needs updating or not
+                text:'Mark Attendance'
+                font_size: 12
+                size_hint_x:1
+                on_press:root.on_submit()
+
+        ScrollView:
+            id:sv
+            size_hint:1, 1
+            StackLayout:
+                id:layout_content
+                padding:5
+                height:self.minimum_height
+                size_hint:None,None
+                do_scroll_x:False

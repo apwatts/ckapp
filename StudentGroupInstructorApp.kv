@@ -1,0 +1,215 @@
+
+<Main_Screen>:
+    # layout
+    # Spinner,        3 Filter Buttons        , Spacer
+    # Select Program, (form,subject,activity)
+    # ScrollView - a number of ClassInstuctorWidgets
+     # - added dynamically via layout_content
+     # group name, population, instructors
+     # group name, population, instructors
+    # click population pops up a list of student
+    # click instructors - change to edit_instructors_screen
+
+    layout_content:layout_content
+    canvas:
+        Color:
+            rgb: [.30, .30, .30]
+        Rectangle:
+            pos:  self.pos
+            size: self.size
+
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint:1, None
+            height:40
+            Spinner:
+                id:spinner_program
+                text:'Select Program'
+                values:root.programs
+                on_text: root.on_spinner_program(spinner_program.text)
+
+            ToggleButton:
+                text: 'Form'
+                state:'down'
+                group:'fca'
+                on_press: root.on_filter(self.text)
+
+            ToggleButton:
+                text: 'Class'
+                group:'fca'
+                on_press: root.on_filter(self.text)
+
+            ToggleButton:
+                text: 'Activity'
+                group:'fca'
+                on_press: root.on_filter(self.text)
+
+            Label:
+                #text: '?'
+                #on_text: the_right_pane.text = ''
+
+        ScrollView:
+            id:sv
+            size_hint:1, 1
+            BoxLayout:
+                orientation:'vertical'
+                id:layout_content
+                padding:5
+                height:self.minimum_height
+                size_hint:1,None
+                do_scroll_x:False
+
+
+#<GroupStudentsPopupContent>:
+#    title:'Demo Popup'
+#    cols:1
+#    padding:10
+#    Label:
+#        text:"Click for pop-up"
+#    Button:
+#        id:pop_close_button
+#        text:"Close the pop-up"
+
+
+
+<ClassInstuctorWidget>:
+    # layout
+    # label      , btn calls popup   , open edit_instructors_screen
+    # group_name , student_population, instructor_names
+
+    id:group_name
+    orientation:'vertical'
+    size_hint:1, None
+    height:30
+    BoxLayout:
+        orientation:'horizontal'
+        size_hint:1, None
+        height:30
+        padding:2
+        Label:
+            id:lbl_group_name
+            size_hint:.5, 1
+
+        Button:
+            id:btn_student_pop
+            size_hint:None, 1
+            width:40
+            text:'none'
+            on_press:root.on_press_pop(lbl_group_name.text)
+
+        Button:
+            id:lbl_instructor_name
+            text:''
+            size_hint:.8, 1
+            on_press:root.on_press_edit(lbl_group_name.text)
+            on_press:root.parent.parent.parent.parent.manager.current="group_instructors_screen"
+
+    Widget:
+        size_hint:1, None
+        height:1
+        canvas:
+            Color:
+                rgba: .5,.5,.5,.5
+            Rectangle:
+                pos: self.x, self.y + 1
+                size: self.size
+
+
+<SelectInstructorWidget>:
+    # layout
+    # Button,            Spinner
+    # '-' ,              all instructor names
+    # delete self        callback to prevent
+    # from parent panel  duplicate name selection
+
+    # to do a text input to allow faster name selection
+
+    spinner_instructor_name:spinner_instructor_name
+
+    id:instructor_name
+    orientation:'horizontal'
+    size_hint:1, None
+    height:40
+    Button:
+        size_hint:None, None
+        width:40
+        height:40
+        text:'-'
+        font:24
+        on_press:root.remove_widget(instructor_name)
+
+    TextInput:
+        id:id_input_instructor_name
+        size_hint:None, None
+        width:200
+        height:40
+        on_text:root.filter_spinner(id_input_instructor_name.text)
+
+    Spinner:
+        id:spinner_instructor_name
+        text:'select instructor'
+        on_text:root.instructor_selected(spinner_instructor_name.text)
+
+
+# Second Screen
+<Group_Instructors_Screen>:
+    layout_insructors_content:layout_insructors_content
+    BoxLayout:
+        orientation:'vertical'
+        size_hint: 1, 1
+
+        BoxLayout:
+            orientation:'horizontal'
+            size_hint: 1, None
+            height:50
+            Label:
+                id:lbl_group_name
+                text:'group name'
+                size_hint: 1, 1
+
+            Button:
+                id: btn_save
+                text: "Save"
+                size_hint: 1, 1
+                font_size: 16
+                on_release: root.save()
+
+            Button:
+                id: btn_cancel
+                text: "Cancel"
+                size_hint: 1, 1
+                font_size: 16
+                on_release: root.manager.current = "main_screen"
+
+        BoxLayout:
+            orientation:'vertical'
+            size_hint:None,None
+            height:50
+            padding:5
+            Button:
+                id: btn_add_widget
+                text: "+"
+                size_hint: None, None
+                height:40
+                width:40
+                font_size: 24
+                on_press:root.add_instructor_widget()
+
+        ScrollView:
+            id:sv
+            size_hint:1, 1
+            BoxLayout:
+                orientation:'vertical'
+                id:layout_insructors_content
+                padding:5
+                height:self.minimum_height
+                size_hint:1,None
+                do_scroll_x:False
+
+
+
+
+
+
